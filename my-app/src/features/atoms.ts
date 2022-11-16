@@ -1,15 +1,13 @@
 import {  declareAtom } from "@reatom/core";
-import { addTodo, checkTodo, deleteTodo, newTodoId } from "./actions"
-import { getNewId } from "./service";
+import { addTodo, checkTodo, deleteTodo } from "./actions"
 import { ITodoItem } from "./types"
+import { v4 as uuidv4 } from 'uuid';
 
 const todoItems: ITodoItem[] = [];
 
-const todoIdMax = 0;
-
 export const todosAtom = declareAtom(todoItems, on => [
     on(addTodo, (state, text) => {return [...state, {
-        id: getNewId(), 
+        id: uuidv4(), 
         text: text, 
         complete: false
     }]}),
@@ -23,8 +21,4 @@ export const todosAtom = declareAtom(todoItems, on => [
                 complete: item.id == id? !item.complete: item.complete};
         })
     })
-])
-
-export const todosIdAtom = declareAtom(todoIdMax, on => [
-    on(newTodoId, state => state + 1)
 ])
